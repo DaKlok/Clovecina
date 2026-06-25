@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Človečina — Otázky pre hlboké rozhovory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-page: #fbf8fd;
+            --surface: #fff7ff;
+            --surface-variant: #f3e9f4;
+            --primary: #6e4da2;
+            --primary-container: #eddffd;
+            --on-primary-container: #280056;
+            --text-main: #1d1a20;
+            --text-muted: #49454f;
+            
+            --cat-pohoda: #4caf50;
+            --cat-pohoda-bg: #e8f5e9;
+            --cat-odvaha: #ff9800;
+            --cat-odvaha-bg: #fff3e0;
+            --cat-pravda: #e91e63;
+            --cat-pravda-bg: #fce4ec;
+            
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            
+            --spring-transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 800px;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--surface-variant);
+            padding: 0.5rem;
+            border-radius: var(--radius-xl);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: transparent;
+            color: var(--text-muted);
+            transition: var(--spring-transition);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(110, 77, 162, 0.25);
+        }
+
+        .action-zone {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-random {
+            border: none;
+            background: var(--primary-container);
+            color: var(--on-primary-container);
+            padding: 1rem 2rem;
+            border-radius: var(--radius-lg);
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--spring-transition);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .btn-random:hover {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 8px 20px rgba(110, 77, 162, 0.15);
+        }
+
+        .btn-random:active {
+            transform: scale(0.98);
+        }
+
+        /* Lucky Card Display */
+        .featured-card-container {
+            width: 100%;
+            max-width: 550px;
+            margin-bottom: 3rem;
+            display: none;
+        }
+
+        .featured-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-xl);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+            border: 2px solid var(--primary-container);
+            text-align: center;
+            animation: cardAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .featured-card .badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-card .question-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--text-main);
+        }
+
+        /* Main Grid Layout */
+        .grid-container {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .grid-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: var(--spring-transition);
+            border: 1px solid rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 160px;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+        }
+
+        .card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card .card-num {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .card .tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .card .text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.45;
+            color: var(--text-main);
+            flex-grow: 1;
+        }
+
+        /* Category Styling Contexts */
+        .bg-pohoda { background-color: var(--cat-pohoda-bg); color: var(--cat-pohoda); }
+        .bg-odvaha { background-color: var(--cat-odvaha-bg); color: var(--cat-odvaha); }
+        .bg-pravda { background-color: var(--cat-pravda-bg); color: var(--cat-pravda); }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 2.2rem; }
+            .featured-card { padding: 1.8rem; }
+            .featured-card .question-text { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Človečina</h1>
+        <p>Hra, ktorá spája ľudí cez úprimné odpovede a zmysluplné rozhovory.</p>
+    </header>
+
+    <div class="controls">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="filterCategory('vsetko', this)">Všetko</button>
+            <button class="tab-btn" onclick="filterCategory('pohoda', this)">Pohoda</button>
+            <button class="tab-btn" onclick="filterCategory('odvaha', this)">Odvaha</button>
+            <button class="tab-btn" onclick="filterCategory('pravda', this)">Hodina pravdy</button>
+        </div>
+
+        <div class="action-zone">
+            <button class="btn-random" onclick="drawRandomCard()">🎲 Losovať náhodnú otázku</button>
+        </div>
+    </div>
+
+    <div class="featured-card-container" id="featuredContainer">
+        <div class="featured-card" id="featuredCard">
+            <span class="badge" id="featuredBadge">Pohoda</span>
+            <div class="question-text" id="featuredText">Tu sa zobrazí vylosovaná otázka.</div>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="grid-title">
+            <span>Zoznam otázok</span> 
+            <span id="counter" style="font-size: 1rem; font-weight: 500; opacity: 0.7;">(200)</span>
+        </div>
+        <div class="questions-grid" id="questionsGrid">
+            </div>
+    </div>
+
+    <script>
+        // Stabilná databáza v tradičnom formáte
+        var db = {
+            pohoda: [
+                "Aká maličkosť ti dnes alebo v posledných dňoch urobila najväčšiu radosť?",
+                "Ktorú pesničku si dokážeš púšťať stále dookola bez toho, aby ťa omrzela?",
+                "Keby tvoj život mal práve teraz filmový žáner, aký by to bol?",
+                "Aké je tvoje najobľúbenejšie miesto v dome/byte a prečo sa tam cítiš dobre?",
+                "Čo najvtipnejšie alebo najbizarnejšie sa ti stalo tento týždeň?",
+                "Akú najlepšiu radu si v živote dostal/a od svojich starých rodičov alebo rodičov?",
+                "Keby si mohol/mohla okamžite získať jednu novú zručnosť, čo by to bolo?",
+                "Ktoré ročné obdobie najviac vystihuje tvoju osobnosť a prečo?",
+                "Aká je tvoja najobľúbenejšia vôňa, ktorá ti okamžite vyvolá peknú spomienku?",
+                "Ktorú knihu alebo film by si odporučil/a každému človeku na svete?",
+                "Máš nejaký ranný rituál, bez ktorého si nevieš predstaviť svoj úspešný deň?",
+                "Kto zo známych osobností by ťa mal hrať v životopisnom filme?",
+                "Aký najkrajší kompliment ti niekto v poslednej dobe zložil?",
+                "Keby si mohol/mohla cestovať kamkoľvek na svete zadarmo, kde by to bolo?",
+                "Čo ťa dokáže spoľahlivo rozosmiať, aj keď máš zlú náladu?",
+                "Akú hračku alebo vec si mal/a v detstve najradšej?",
+                "Čo je podľa teba ten najlepší liek na unavenú myseľ po ťažkom dni?",
+                "Aký bol tvoj najobľúbenejší predmet v škole a prečo ťa bavil?",
+                "Keby si mal/a opísať svoj dnešný deň len tromi slovami, aké by to boli?",
+                "Aké jedlo by si dokázal/a jesť každý deň do konca života?",
+                "Ktoré zviera ťa podľa teba najlepšie charakterizuje?",
+                "Aký je tvoj obľúbený spôsob oddychu, kedy úplne vypneš telefón?",
+                "Keby si mohol/mohla prežiť jeden deň v koži niekoho iného, kto by to bol?",
+                "Čo ťa naposledy úprimne fascinovalo alebo prekvapilo?",
+                "Na akú vec, ktorú si si sám/sama kúpil/a, si najviac hrdý/á?",
+                "Máš nejaké tajné nadanie alebo mikro-talent, o ktorom veľa ľudí nevie?",
+                "Aká je tvoja najživšia spomienka z detstva spojená s prázdninami?",
+                "Ktorú hru (spoločenskú alebo digitálnu) by si si zahral/a kedykoľvek znova?",
+                "Ktorý priateľ alebo známy ťa v poslednom čase najviac inšpiroval a čím?",
+                "Keby si mohol/mohla zmeniť farbu jednej veci na svete, čo by to bolo?",
+                "Čo je prvá vec, ktorú si všimneš na človeku, keď ho stretneš prvýkrát?",
+                "Aký najlepší darček si kedy niekomu daroval/a?",
+                "Ktorý citát alebo životné motto ťa sprevádza už dlhšiu dobu?",
+                "Ak by si mal/a zorganizovať dokonalý večer s priateľmi, ako by vyzeral?",
+                "Čo ti v poslednom čase prinieslo pocit absolútneho pokoja?",
+                "Máš radšej skoré ranné vstávanie a pokoj, alebo nočný život a ticho?",
+                "Ktoré miesto v tvojom okolí má podľa teba najkrajší výhľad?",
+                "Aká bola tvoja najobľúbenejšia rozprávka, keď si bol/a malý/á?",
+                "Ak by si mal/a napísať knihu, o čom by bola?",
+                "Čo ťa na ľuďoch vo tvojom okolí vie najviac fascinovať v pozitívnom zmysle?",
+                "Aký najzaujímavejší fakt si sa v poslednej dobe dozvedel/a?",
+                "Ktorá pieseň ti vždy dodá obrovské množstvo energie a motivácie?",
+                "Keby si mal/a neobmedzený rozpočet na oslavu svojich narodenín, ako by vyzerala?",
+                "Ktorú vec nosíš neustále so sebou a prečo je pre teba dôležitá?",
+                "Čo najbizarnejšie alebo najkrajšie si kedy videl/a na oblohe?",
+                "Ktorý technologický vynález ti najviac uľahčuje každodenný život?",
+                "Ak by si mohol/mohla vlastniť akýkoľvek historický predmet, čo by to bolo?",
+                "Aký typ počasia ti robí najlepšiu náladu a prečo?",
+                "Čo ťa naučil tvoj domáci miláčik (alebo zvieratá všeobecne) o živote?",
+                "Keby si mal/a vybrať jednu vec, ktorú na sebe nosíš najradšej, čo by to bolo?",
+                "Ktoré ovocie alebo zeleninu považuješ za absolútny kráľovský kúsok prírody?",
+                "Aká je tvoja najobľúbenejšia tradícia, ktorú doma dodržiavate?",
+                "Ak by si mal/a možnosť stráviť hodinu rozhovorom s akýmkoľvek vedcom, kto by to bol?",
+                "Čo ťa naposledy prinútilo usmiať sa na neznámeho človeka na ulici?",
+                "Ktorý zážitok z posledného roka by si si chcel/a pamätať navždy?",
+                "Aká je tvoja najobľúbenejšia príchuť zmrzliny, ktorú si dáš za každých okolností?",
+                "Keby tvoj domov mohol mať jednu čarovnú miestnosť navyše, čo by v nej bolo?",
+                "Čo pre teba znamená slovo 'pohoda' vyjadrené jedným konkrétnym obrazom?",
+                "Ktorá historická éra ťa vizuálne alebo atmosféricky najviac priťahuje?",
+                "Akú najlepšiu vec si sa naučil/a variať alebo piecť?",
+                "Ak by si mohol/mohla poslať odkaz celému svetu, ktorý by sa zobrazil na oblohe, čo by tam stálo?",
+                "Ktorý kus oblečenia ti dodáva najväčšie sebavedomie, keď si ho oblečieš?",
+                "Aké je tvoje obľúbené slovenské slovo a prečo sa ti páči jeho zvuk?",
+                "Keby si mohol/mohla otvoriť kaviareň alebo reštauráciu, ako by sa volala a čo by sa tam podávalo?",
+                "Čo ťa na prírode vo tvojom okolí vie najviac očariť?",
+                "Aký najlepší kompliment si kedy dostal/a za svoju prácu alebo tvorbu?",
+                "Ktorý šport alebo pohybová aktivita ťa najviac napĺňa čistou radosťou?"
+            ],
+            odvaha: [
+                "Čoho sa v živote momentálne najviac bojíš, ale málokedy o tom nahlas hovoríš?",
+                "Kedy si naposledy musel/a prekonať sám/sama seba a urobiť niečo, z čoho si mal/a obrovský strach?",
+                "Ktoré svoje rozhodnutie z minulosti považuješ za najodvážnejšie?",
+                "Povedal/a si niekomu v poslednej dobe rázne 'NIE', hoci to bolo pre teba veľmi ťažké?",
+                "Čo najbláznivejšie alebo najriskantnejšie si v živote urobil/a a dopadlo to dobre?",
+                "Keby si vedel/a, že na 100% neuspeješ, ale nikto sa o tom nedozvie, skúsil/a by si to aj tak?",
+                "Aká je tá najnepríjemnejšia pravda, ktorú si si o sebe musel/a v poslednom čase priznať?",
+                "Kedy si naposledy obhajoval/a niekoho, proti komu stála celá skupina ľudí?",
+                "Čo by si urobil/a, keby si mal/a na jeden deň absolútnu imunitu voči strachu?",
+                "Ktorý tvoj zlozvyk alebo vlastnosť ťa najviac brzdí v dosahovaní cieľov?",
+                "Dokázal/a by si sa zbaliť do jedného batohu a odísť žiť na rok do úplne cudzej krajiny?",
+                "Kedy si naposledy priznal/a svoju chybu pred niekým, na kom ti veľmi záleží?",
+                "Čo je pre teba ťažšie: prijať kritiku, alebo prijať úprimnú, hlbokú pochvalu?",
+                "Akú najväčšiu pravdu o svojich pocitych momentálne pred niekým dusíš v sebe?",
+                "Keby si mal/a možnosť zmeniť jedno svoje radikálne rozhodnutie z minulosti, urobil/a by si to?",
+                "Čo by si zmenil/a na svojom správaní k ľuďom, keby si vedel/a, že ťa nikto nesúdi?",
+                "Aký je tvoj postoj k riskovaniu? Si skôr opatrný typ, alebo ideš do vecí po hlave?",
+                "Kedy si sa naposledy cítil/a naozaj nepochopený/á svojím okolím?",
+                "Čo najodvážnejšie si kedy napísal/a do správy alebo mailu a stlačil/a 'odoslať'?",
+                "Bojíš sa viac zlyhania, alebo toho, že stratíš kontrolu nad vecami?",
+                "Ktorá situácia ťa v živote najviac zocelila a naučila ťa postaviť sa za seba?",
+                "Keby si mal/a verejne vystúpiť pred 1000 ľuďmi, o akej téme by si dokázal/a rozprávať bez prípravy?",
+                "Dokážeš otvorene hovoriť o svojich slabostiach, alebo sa snažíš vždy pôsobiť silne?",
+                "Akú najväčšiu výzvu pred sebou momentálne tlačíš a odkladáš ju na neskôr?",
+                "Kedy si naposledy plakal/a pred iným človekom a čo to vo tebe zanechalo?",
+                "Záleží ti na tom, čo si o tebe myslia cudzí ľudia na ulici alebo na internete?",
+                "Keby si mohol/mohla zo svojho života vymazať jeden trapas, ktorý sa ti stal, ktorý by to bol?",
+                "Čo je pre teba najväčším prejavom odvahy u iných ľudí?",
+                "Dokázal/a by si odpustiť zradu človeku, ktorého považuješ za najlepšieho priateľa?",
+                "Kedy si naposledy zažil/a pocit, že si na niečo úplne sám/sama, a ako si to zvládol/la?",
+                "Čo ťa vie najspoľahlivejšie vyprovokovať k tomu, aby si začal/a bojovať za spravodlivosť?",
+                "Aká najťažšia otázka ti bola v živote položená a ako si na ňu odpovedal/a?",
+                "Keby si mal/a možnosť vidieť svoju budúcnosť za 10 rokov, chcel/a by si lu vidieť, alebo radšej riskuješ?",
+                "Čo najodvážnejšie si urobil/a pre lásku alebo priateľstvo?",
+                "Dokážeš odísť z prostredia alebo vzťahu, ktorý ti škodí, hoci ho máš rád/a?",
+                "Kedy si sa naposledy cítil/a hrdý/á na to, ako si zvládol/la krízovú situáciu?",
+                "Máš odvahu povedať pravdu, aj keď vieš, že tým niekoho sklameš alebo zraníš?",
+                "Ktoru svoju emóciu sa najčastejšie snažíš pred svetom skrývať?",
+                "Ak by si mal/a zajtra začať od nuly v úplne novom obore, čo by to bolo?",
+                "Čo je pre teba najväčším testom vnútornej sily a integrity?",
+                "Kedy si naposledy prekonal/a sociálnu úzkosť alebo nekomfort v neznámej spoločnosti?",
+                "Aká je tvoja najväčšia neistota ohľadom tvojej vlastnej budúcnosti?",
+                "Keby si mal/a možnosť vymazať jednu svoju spomienku, aby si už necítil/a bolesť, urobil/a by si to?",
+                "Čo ti dodáva najväčšiu odvahu, keď stojíš pred dôležitým životným krokom?",
+                "Dokážeš sa bez problémov ospravedlniť mladšiemu človeku alebo dieťaťu, ak vieš, že si pochybil/a?",
+                "Kedy si naposledy povedal/a niekomu do očí niečo, čo ho naozaj šokovalo?",
+                "Čo ťa naposledy prinútilo vystúpiť zo svojej komfortnej zóny tak silno, že si mal/a husiu kožu?",
+                "Akú masku najčastejšie nasadzuješ, keď sa necítiš vo svojej koži?",
+                "Bolo by pre teba ťažké stráviť týždeň v úplnej samote bez akéhokoľvek kontaktu so svetom?",
+                "Ktorá tvoja vlastnosť ti v živote priniesla najviac problémov, no odmietaš ju zmeniť?",
+                "Čo najodvážnejšie by si chcel/a dosiahnuť v nasledujúcich piatich rokoch?",
+                "Kedy si mal/a naposledy pocit, že riskuješ všetko pre jednu jedinú vec?",
+                "Si pripravený/á niesť následky za svoje chyby, alebo podvedome hľadáš výhovorky?",
+                "Ak by ti niekto ponúkol možnosť zistiť presný dátum tvojej smrti, chcel/a by si to vedieť?",
+                "Ktorú pravdu o svete je podľa teba najťažšie prijať?",
+                "Čo ťa dokáže najviac vystrašiť na správaní dnešnej spoločnosti?",
+                "Kedy si naposledy investoval/a obrovské množstvo energie do niečoho, čo nakoniec nevyšlo?",
+                "Máš odvahu priznať si, že v niečom zásadnom nevieš, ako ďalej?",
+                "Ktorý tvoj krok v živote vyžadoval najviac trpezlivosti a odopierania si vecí?",
+                "Čo pre teba znamená žiť odvážny život v bežných, každodenných dňoch?",
+                "Kedy si naposledy obetoval/a svoje vlastné pohodlie pre dobro niekoho iného?",
+                "Ktorý strach z detstva ťa drží dodnes, hoci vieš, že je iracionálny?",
+                "Ak by si mal/a napísať list svojmu budúcemu ja, pred čím by si sa najviac varoval/a?",
+                "Čo ťa najviac desí na predstave, že by si zostal/a nepochopený/á tými najbližšími?",
+                "Dokážeš sa postaviť autorite, ak vieš, že nemá pravdu a koná nespravodlivo?",
+                "Aká najriskantnejšia investícia (finančná, časová alebo emocionálna) sa ti v živote oplatila?",
+                "Kedy si mal/a naposledy pocit, že si prekročil/a hranicu, ktorú si si sám/sama určil/a?"
+            ],
+            pravda: [
+                "Odpustil/a si už naozaj človeku, ktorý ti v živote najviac ublížil?",
+                "Čo si o sebe často nahováraš, hoci v hĺbke duše vieš, že to nie je pravda?",
+                "Keby si mal/a zajtra zomrieť, čo by si najviac ľutoval/a, že si nestihol/la urobiť alebo povedať?",
+                "Cítiš sa niekedy osamelo, aj keď si obklopený/á ľuďmi, ktorí ťa majú radi?",
+                "Kedy si naposledy predstieral/a, že si niekým iným, len aby si zapadol/la do kolektívu?",
+                "Aká je tvoja najväčšia neresť alebo tajomstvo, ktoré o tebe nevie absolútne nikto?",
+                "Čo je tá najsebeckejšia vec, ktorú pravidelne robíš alebo si v živote urobil/a?",
+                "Žiješ naozaj svoj vlastný život, alebo plníš očakávania svojich rodičov a okolia?",
+                "Ktorá udalosť z minulosti ťa najviac vnútorne zlomila a ako ťa to zmenilo?",
+                "Ak by si mal/a možnosť vymazať zo svojho života jedného človeka, urobil/a by si to?",
+                "Kedy si naposledy pocítil/a čistú, nefalšovanú závisť voči úspechu niekoho blízkeho?",
+                "Čo na sebe úprimne nedokážeš vystáť a bojuješ s tým každý jeden deň?",
+                "Ktorý tvoj vzťah (priateľský či rodinný) je momentálne najviac naštrbený a koho je to chyba?",
+                "Čo je pre teba dôležitejšie: osobný úspech a kariéra, alebo hlboké a stabilné vzťahy?",
+                "Kedy si bol/a naposledy na seba naozaj hnusný/á a kritizoval/a si sa pod čiernu zem?",
+                "Akú najväčšiu lož si v živote povedal/a a aké mala následky?",
+                "Čo by sa stalo, keby ľudia v tvojom okolí dokázali čítať tvoje myšlienky na hodinu?",
+                "Cítiš sa niekedy nedocenený/á za to všetko, čo robíš pre ostatných ľudí?",
+                "Ktorá tvoja vlastnosť alebo správanie najviac ubližuje ľuďom, ktorých miluješ?",
+                "Ak by si mal/a pomenovať svoju najväčšiu traumu, čo by to bolo?",
+                "Čo ťa robí skutočne šťastným/ou, bez ohľadu na peniaze, status alebo názor iných?",
+                "Veríš, že ťa ľudia majú radi kvôli tomu, kým naozaj si, alebo kvôli tomu, čo pre nich robíš?",
+                "Kedy si naposledy využil/a niečiu dobrotu vo svoj vlastný prospech?",
+                "Čo je tá najťažšia vec, ktorú si musel/a niekomu oznámiť face-to-face?",
+                "Akú pravdu o sebe sa najviac bojíš zistiť, keď zostaneš sám/sama v tichu?",
+                "Ktorý tvoj sen z detstva už definitívne zomrel a ako si sa s tým vyrovnal/a?",
+                "Čo ťa dokáže najrýchlejšie obrať o všetku životnú energiu a vieru v lepšie zajtrajšky?",
+                "Kedy si naposledy niekoho úmyselne ignoroval/a, hoci si vedel/a, že ťa potrebuje?",
+                "Si spokojný/á s tým, akým človekom si sa stal/a za posledné tri roky?",
+                "Čo je podľa teba najväčším zlyhaním v ľudskom živote?",
+                "Ktorá vec ťa vie najviac rozplakať, keď si úplne sám/sama?",
+                "Čo najhoršie si kedy o niekom povedal/a za jeho chrbtom?",
+                "Ak by si mal/a možnosť zmeniť jednu vec na svojej výchove a detstve, čo by to bolo?",
+                "Bojíš sa starnutia a toho, že stratíš svoju mladosť a silu?",
+                "Kedy si naposledy pocítil/a hlbokú ľútosť nad niečím, čo si povedal/a v hneve?",
+                "Čo je pre teba najväčším zdrojom vnútornej neistoty, keď sa pozrieš do zrkadla?",
+                "Akú radu by si dal/a svojmu mladšiemu ja, keby si mal/a len 30 sekúnd času?",
+                "Čo ti drží pri živote a dáva ti zmysel ráno vstať z postele, keď máš tie najhoršie dni?",
+                "Veríš v osud, alebo si pevne presvedčený/á, že všetko máš len vo svojich rukách?",
+                "Kedy si sa naposledy cítil/a ako totálny pokrytec?",
+                "Čo je najväčšia obeta, akú si kedy pre niekoho priniesol/la a stála vôbec za to?",
+                "Ktorá tvoja tajná túžba ťa najviac desí, pretože by mohla zničiť tvoj doterajší život?",
+                "Cítiš sa vo svojom vnútri slobodný/á, alebo si väzňom svojich vlastných povinností a strachov?",
+                "Čo by si najradšej vymazal/a zo svojej internetovej histórie alebo pamäte telefónu?",
+                "Kedy si naposledy niekomu povedal/a 'Milujem ťa' alebo 'Záleží mi na tebe' a myslel/a si to absolútne úprimne?",
+                "Čo ťa na tvojom živote momentálne najviac frustruje a prečo s tým nič nerobíš?",
+                "Ak by si mal/a možnosť zistiť, čo si o tebe ľudia naozaj myslia, chcel/a by si to vedieť?",
+                "Ktorú chybu svojich rodičov podvedome opakuješ, hoci si si sľúbil/a, že to nikdy neurobíš?",
+                "Čo pre teba znamená skutočná, čistá láska bez akýchkoľvek podmienok?",
+                "Kedy si naposledy zažil/a moment, kedy si si uvedomil/a vlastnú smrteľnosť?",
+                "Čo je tá najodvážnejšia vec, ktorú by si urobil/a, keby ti zostával posledný mesiac života?",
+                "Cítiš sa niekedy vinný/á za to, že máš lepší život ako ľudia okolo teba?",
+                "Ktorá lož, ktorú ti niekto povedal, ťa ranila najviac v celom tvojom živote?",
+                "Čo ťa drží v noci hore, keď nemôžeš zaspať a premýšľaš nad životom?",
+                "Si pripravený/á odpustiť sám/sama sebe všetky svoje zlyhania a minulé verzie seba?",
+                "Čo je pre teba tou najdôležitejšou hodnotou, cez ktorú nikdy, za žiadnych okolností, nejde vlak?",
+                "Kedy si naposledy zažil/a pocit absolútneho vyhorenia a ako si z neho vykorčuľoval/a?",
+                "Ak by si mal/a vybrať jednu vec, ktorú na svete najviac nenávidíš, čo by to bolo?",
+                "Čo ťa v tvojom živote stojí najviac pretvárky a brania na seba cudzej roly?",
+                "Ktoré slovo alebo veta ťa dokáže v sekunde najviac emociálne zlomiť?",
+                "Čo je podľa teba najväčšia pravda o vzťahoch, ktorú sa ľudia učia až príliš neskoro?",
+                "Kedy si naposledy pocítil/a, že tvoje srdce a tvoj rozum chcú dve úplne opačné veci?",
+                "Čo ti najviac chýba z čias, kedy si bol/a ešte bezstarostným dieťaťom?",
+                "Ak by si mal/a možnosť vrátiť čas a zmeniť jednu jedinú sekundu vo svojom živote, ktorá by to bola?",
+                "Čo pre teba znamená byť naozaj 'dobrým človekom' v dnešnom komplikovanom svete?",
+                "Máš v sebe nejaké nedoriešené záležitosti s niekým, kto už nežije?",
+                "Ktorá otázka z tohto zoznamu ťa zasiahla najhlbšie a prinútila ťa na chvíľu sa zamyslieť?"
+            ]
+        };
+
+        var allQuestions = [];
+        
+        function initData() {
+            allQuestions = [];
+            var globalId = 1;
+            var categories = ['pohoda', 'odvaha', 'pravda'];
+            
+            for (var i = 0; i < categories.length; i++) {
+                var cat = categories[i];
+                var list = db[cat];
+                for (var j = 0; j < list.length; j++) {
+                    allQuestions.push({
+                        id: globalId++,
+                        category: cat,
+                        text: list[j]
+                    });
+                }
+            }
+        }
+
+        function getCategoryLabel(cat) {
+            if (cat === 'pohoda') return 'Pohoda';
+            if (cat === 'odvaha') return 'Odvaha';
+            return 'Hodina pravdy';
+        }
+
+        // Tvorba karty klasickým spôsobom - 100% nepriestrelná kompatibilita
+        function createCard(q) {
+            var card = document.createElement('div');
+            card.className = 'card';
+            
+            card.onclick = function() {
+                showFeatured(q);
+            };
+            
+            card.innerHTML = '<div class="card-header">' +
+                '<span class="card-num">#' + q.id + '</span>' +
+                '<span class="tag bg-' + q.category + '">' + getCategoryLabel(q.category) + '</span>' +
+                '</div>' +
+                '<div class="text">' + q.text + '</div>';
+                
+            return card;
+        }
+
+        function renderGrid(questions) {
+            var grid = document.getElementById('questionsGrid');
+            grid.innerHTML = '';
+            
+            for (var i = 0; i < questions.length; i++) {
+                grid.appendChild(createCard(questions[i]));
+            }
+
+            document.getElementById('counter').innerText = '(' + questions.length + ')';
+        }
+
+        function filterCategory(cat, btn) {
+            var buttons = document.querySelectorAll('.tab-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            btn.classList.add('active');
+
+            if (cat === 'vsetko') {
+                renderGrid(allQuestions);
+            } else {
+                var filtered = [];
+                for (var j = 0; j < allQuestions.length; j++) {
+                    if (allQuestions[j].category === cat) {
+                        filtered.push(allQuestions[j]);
+                    }
+                }
+                renderGrid(filtered);
+            }
+        }
+
+        function drawRandomCard() {
+            if (allQuestions.length === 0) return;
+            var randomIndex = Math.floor(Math.random() * allQuestions.length);
+            var q = allQuestions[randomIndex];
+            showFeatured(q);
+        }
+
+        function showFeatured(q) {
+            var container = document.getElementById('featuredContainer');
+            var card = document.getElementById('featuredCard');
+            var badge = document.getElementById('featuredBadge');
+            var text = document.getElementById('featuredText');
+
+            card.style.animation = 'none';
+            card.offsetHeight; 
+            card.style.animation = null;
+
+            badge.className = 'badge bg-' + q.category;
+            badge.innerText = getCategoryLabel(q.category);
+            text.innerText = q.text;
+
+            container.style.display = 'block';
+            window.scrollTo({ top: container.offsetTop - 40, behavior: 'smooth' });
+        }
+
+        // Spustenie po načítaní celej stránky
+        window.onload = function() {
+            initData();
+            renderGrid(allQuestions);
+        };
+    </script>
+</body>
+</html>
