@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#FEF7FF" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#141218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="Hra, ktorá spája ľudí cez úprimné odpovede a zmysluplné rozhovory.">
+    <title>Človečina — Otázky pre hlboké rozhovory</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-25..0&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           DESIGN TOKENS — Material 3 Expressive (Light)
+           ============================================ */
+        :root {
+            /* Surfaces */
+            --bg: #FEF7FF;
+            --surface: #FFFFFF;
+            --surface-dim: #DED8E1;
+            --surface-bright: #FEF7FF;
+            --surface-container-lowest: #FFFFFF;
+            --surface-container-low: #F7F2FA;
+            --surface-container: #F3EDF7;
+            --surface-container-high: #ECE6F0;
+            --surface-container-highest: #E6E0E9;
+
+            /* Text */
+            --on-surface: #1D1B20;
+            --on-surface-variant: #49454F;
+
+            /* Primary (purple) */
+            --primary: #6E4DA2;
+            --on-primary: #FFFFFF;
+            --primary-container: #E9DDFF;
+            --on-primary-container: #21005D;
+
+            /* Outline */
+            --outline: #79747E;
+            --outline-variant: #CAC4D0;
+
+            /* Category — Pohoda (green) */
+            --cat-pohoda: #2E7D32;
+            --cat-pohoda-container: #C8E6C9;
+            --cat-pohoda-on: #005904;
+
+            /* Category — Odvaha (orange) */
+            --cat-odvaha: #C54800;
+            --cat-odvaha-container: #FFDBC9;
+            --cat-odvaha-on: #3B0900;
+
+            /* Category — Pravda (pink) */
+            --cat-pravda: #AD1457;
+            --cat-pravda-container: #FFD9E2;
+            --cat-pravda-on: #400013;
+
+            /* Shape — M3 Expressive uses larger, more dynamic shapes */
+            --shape-xs: 8px;
+            --shape-sm: 12px;
+            --shape-md: 16px;
+            --shape-lg: 22px;
+            --shape-xl: 28px;
+            --shape-2xl: 36px;
+            --shape-full: 999px;
+
+            /* Motion — spring & emphasis easing */
+            --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+            --ease-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+            --ease-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-spring-soft: cubic-bezier(0.5, 1.25, 0.6, 1);
+
+            /* Elevation */
+            --elev-1: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06);
+            --elev-2: 0 1px 2px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.06);
+            --elev-3: 0 4px 8px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+            --elev-4: 0 6px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+            --elev-5: 0 12px 24px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.06);
+
+            /* Glass */
+            --glass-bg: rgba(255, 255, 255, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-blur: 24px;
+
+            /* Layout */
+            --app-max-width: 480px;
+            --app-bar-h: 64px;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+
+            color-scheme: light;
+        }
+
+        /* Dark theme */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #141218;
+                --surface: #1D1B20;
+                --surface-dim: #141218;
+                --surface-bright: #3B383E;
+                --surface-container-lowest: #0F0D13;
+                --surface-container-low: #1D1B20;
+                --surface-container: #211F26;
+                --surface-container-high: #2B2930;
+                --surface-container-highest: #36343B;
+
+                --on-surface: #E6E0E9;
+                --on-surface-variant: #CAC4D0;
+
+                --primary: #CFBCFF;
+                --on-primary: #381E72;
+                --primary-container: #4F378B;
+                --on-primary-container: #E9DDFF;
+
+                --outline: #938F99;
+                --outline-variant: #49454F;
+
+                --cat-pohoda: #7ADC7E;
+                --cat-pohoda-container: #005904;
+                --cat-pohoda-on: #C8E6C9;
+
+                --cat-odvaha: #FFB59B;
+                --cat-odvaha-container: #8C2D00;
+                --cat-odvaha-on: #FFDBC9;
+
+                --cat-pravda: #FFB1C8;
+                --cat-pravda-container: #88024B;
+                --cat-pravda-on: #FFD9E2;
+
+                --glass-bg: rgba(33, 31, 38, 0.72);
+                --glass-border: rgba(255, 255, 255, 0.08);
+
+                --elev-1: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.4);
+                --elev-2: 0 1px 2px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.5);
+                --elev-3: 0 4px 8px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.3);
+                --elev-4: 0 6px 12px rgba(0,0,0,0.55), 0 2px 4px rgba(0,0,0,0.3);
+                --elev-5: 0 12px 24px rgba(0,0,0,0.6), 0 4px 8px rgba(0,0,0,0.4);
+
+                color-scheme: dark;
+            }
+        }
+
+        /* ============================================
+           BASE
+           ============================================ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        html, body {
+            height: 100%;
+            overscroll-behavior-y: none;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--on-surface);
+            line-height: 1.5;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            overflow-x: hidden;
+            touch-action: pan-y;
+        }
+
+        .material-symbols-rounded {
+            font-family: 'Material Symbols Rounded';
+            font-weight: normal;
+            font-style: normal;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            user-select: none;
+        }
+
+        button {
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            border: none;
+            background: none;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        ::selection {
+            background: var(--primary-container);
+            color: var(--on-primary-container);
+        }
+
+        /* Custom scrollbar — thin, subtle */
+        ::-webkit-scrollbar { width: 0; height: 0; }
+
+        /* ============================================
+           APP SHELL — mobile frame
+           ============================================ */
+        .app-shell {
+            position: relative;
+            width: 100%;
+            min-height: 100dvh;
+            max-width: var(--app-max-width);
+            margin: 0 auto;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            padding-top: var(--safe-top);
+            padding-bottom: var(--safe-bottom);
+            padding-left: var(--safe-left);
+            padding-right: var(--safe-right);
+        }
+
+        /* Subtle ambient gradient background */
+        .app-shell::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 600px 400px at 50% -10%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 70%),
+                radial-gradient(ellipse 500px 400px at 100% 30%, color-mix(in srgb, var(--cat-pravda) 8%, transparent), transparent 60%),
+                radial-gradient(ellipse 500px 400px at 0% 60%, color-mix(in srgb, var(--cat-pohoda) 8%, transparent), transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ============================================
+           APP BAR — sticky, glassmorphic
+           ============================================ */
+        .app-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 8px 12px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+            border-bottom: 0.5px solid var(--outline-variant);
+            transition: border-color 0.3s var(--ease-emphasized);
+        }
+
+        .app-bar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            min-height: 48px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--shape-sm);
+            background: linear-gradient(135deg, var(--primary) 0%, color-mix(in srgb, var(--primary) 60%, var(--cat-pravda)) 100%);
+            position: relative;
+            box-shadow: var(--elev-2);
+            flex-shrink: 0;
+        }
+        .brand-mark::after {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            border: 2px solid var(--on-primary);
+            opacity: 0.9;
+        }
+
+        .brand-name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--on-surface);
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--shape-full);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--on-surface-variant);
+            position: relative;
+            overflow: hidden;
+            transition: background 0.2s var(--ease-emphasized), transform 0.15s var(--ease-spring);
+        }
+        .icon-btn:active { transform: scale(0.88); }
+        .icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+        .icon-btn .material-symbols-rounded { font-size: 24px; }
+
+        /* ============================================
+           CONTENT
+           ============================================ */
+        .content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+            padding: 20px 16px 140px;
+        }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            margin-bottom: 28px;
+            padding: 24px 4px 8px;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: heroIn 0.7s var(--ease-emphasized-decelerate) 0.05s forwards;
+        }
+
+        @keyframes heroIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px 6px 8px;
+            background: var(--primary-container);
+            color: var(--on-primary-container);
+            border-radius: var(--shape-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: pulse 2.2s var(--ease-emphasized) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.5; }
+        }
+
+        .hero-title {
+            font-size: clamp(1.85rem, 8vw, 2.4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.035em;
+            color: var(--on-surface);
+            margin-bottom: 12px;
+        }
+        .hero-title em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 50%, var(--cat-pravda)));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-sub {
+            font-size: 1rem;
+            color: var(--on-surface-variant);
+            margin-bottom: 22px;
+            max-width: 36ch;
+            line-height: 1.55;
+        }
+
+        /* Primary button — pill, gradient, springy */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 22px;
+            border-radius: var(--shape-full);
+            background: var(--primary);
+            color: var(--on-primary);
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: -0.005em;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 35%, transparent),
+                        0 1px 2px color-mix(in srgb, var(--primary) 20%, transparent);
+            transition: transform 0.2s var(--ease-spring), box-shadow 0.2s var(--ease-emphasized);
+        }
+        .btn-primary:active {
+            transform: scale(0.96);
+            box-shadow: 0 1px 3px color-mix(in srgb, var(--primary) 25%, transparent);
+        }
+        .btn-primary .material-symbols-rounded { font-size: 20px; }
+
+        /* Ripple */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.35);
+            transform: scale(0);
+            animation: ripple 0.6s var(--ease-emphasized);
+            pointer-events: none;
+        }
+        @keyframes ripple {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* ============================================
+           FILTER CHIPS — horizontal scroll, M3 Expressive pill morph
+           ============================================ */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scroll-snap-type: x proximity;
+            padding: 4px 0 12px;
+            margin: 0 -16px;
+            padding-left: 16px;
+            padding-right: 16px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .filter-bar::-webkit-scrollbar { display: none; }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 16px;
+            border-radius: var(--shape-full);
+            background: var(--surface-container-low);
+            color: var(--on-surface-variant);
+            border: 1px solid var(--outline-variant);
+            font-size: 0.875rem;
+            font-weight: 600;
+            white-space: nowrap;
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            transition:
+                background 0.3s var(--ease-emphasized),
+                color 0.3s var(--ease-emphasized),
+                border-color 0.3s var(--ease-emphasized),
+                transform 0.2s var(--ease-spring),
+                padding 0.3s var(--ease-emphasized);
+        }
+        .chip:active { transform: scale(0.94); }
+
+        .chip-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: transform 0.3s var(--ease-spring);
+        }
+        .dot-pohoda { background: var(--cat-pohoda); }
+        .dot-odvaha { background: var(--cat-odvaha); }
+        .dot-pravda { background: var(--cat-pravda); }
+
+        .chip.active {
+            background: var(--primary-container);
+            color: var(--on-primary-container);
+            border-color: transparent;
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+        .chip.active .chip-dot { transform: scale(1.15); }
+
+        /* ============================================
+           LIST HEADER
+           ============================================ */
+        .list-header {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            padding: 8px 0 14px;
+        }
+        .list-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: var(--on-surface);
+        }
+        .list-count {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--on-surface-variant);
+            background: var(--surface-container);
+            padding: 3px 9px;
+            border-radius: var(--shape-full);
+            min-width: 28px;
+            text-align: center;
+            transition: background 0.3s var(--ease-emphasized);
+        }
+
+        /* ============================================
+           CARDS LIST — single column on mobile, masonry-feel
+           ============================================ */
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .card {
+            background: var(--surface-container-low);
+            border-radius: var(--shape-lg);
+            padding: 16px 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid transparent;
+            opacity: 0;
+            transform: translateY(8px);
+            animation: cardIn 0.45s var(--ease-emphasized-decelerate) forwards;
+            transition:
+                background 0.25s var(--ease-emphasized),
+                border-color 0.25s var(--ease-emphasized),
+                transform 0.2s var(--ease-spring),
+                box-shadow 0.25s var(--ease-emphasized);
+        }
+        @keyframes cardIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card:active {
+            transform: scale(0.985);
+            background: var(--surface-container);
+        }
+
+        /* Color accent strip on left, morphs on hover/active */
+        .card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 0 4px 4px 0;
+            transition: width 0.3s var(--ease-spring);
+        }
+        .card:active::before { width: 6px; }
+
+        .card[data-cat="pohoda"]::before { background: var(--cat-pohoda); }
+        .card[data-cat="odvaha"]::before { background: var(--cat-odvaha); }
+        .card[data-cat="pravda"]::before { background: var(--cat-pravda); }
+
+        .card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px 4px 8px;
+            border-radius: var(--shape-full);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            text-transform: uppercase;
+        }
+        .tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        .tag[data-cat="pohoda"] { background: var(--cat-pohoda-container); color: var(--cat-pohoda-on); }
+        .tag[data-cat="pohoda"]::before { background: var(--cat-pohoda); }
+        .tag[data-cat="odvaha"] { background: var(--cat-odvaha-container); color: var(--cat-odvaha-on); }
+        .tag[data-cat="odvaha"]::before { background: var(--cat-odvaha); }
+        .tag[data-cat="pravda"] { background: var(--cat-pravda-container); color: var(--cat-pravda-on); }
+        .tag[data-cat="pravda"]::before { background: var(--cat-pravda); }
+
+        .card-num {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--on-surface-variant);
+            opacity: 0.55;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.02em;
+        }
+
+        .card-text {
+            font-size: 0.98rem;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--on-surface);
+            letter-spacing: -0.005em;
+        }
+
+        .card-foot {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-top: 2px;
+        }
+        .card-arrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--on-surface-variant);
+        }
+        .card-arrow .material-symbols-rounded {
+            font-size: 16px;
+            transition: transform 0.25s var(--ease-spring);
+        }
+        .card:active .card-arrow .material-symbols-rounded { transform: translateX(2px); }
+
+        /* ============================================
+           FAB — floating action button (above safe area)
+           ============================================ */
+        .fab {
+            position: fixed;
+            right: max(16px, var(--safe-right));
+            bottom: calc(16px + var(--safe-bottom));
+            z-index: 40;
+            width: 60px;
+            height: 60px;
+            border-radius: var(--shape-lg);
+            background: var(--primary);
+            color: var(--on-primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                0 4px 12px color-mix(in srgb, var(--primary) 40%, transparent),
+                0 1px 3px rgba(0,0,0,0.15);
+            transition: transform 0.25s var(--ease-spring), box-shadow 0.25s var(--ease-emphasized);
+            overflow: hidden;
+        }
+        .fab:active {
+            transform: scale(0.9);
+            box-shadow: 0 2px 6px color-mix(in srgb, var(--primary) 30%, transparent);
+        }
+        .fab .material-symbols-rounded {
+            font-size: 28px;
+            transition: transform 0.5s var(--ease-spring);
+        }
+        .fab.spinning .material-symbols-rounded {
+            transform: rotate(360deg);
+        }
+
+        /* Position FAB inside app shell on wider screens */
+        @media (min-width: 520px) {
+            .fab {
+                right: calc(50% - var(--app-max-width)/2 + 16px);
+            }
+        }
+
+        /* ============================================
+           BOTTOM SHEET MODAL
+           ============================================ */
+        .sheet-scrim {
+            position: fixed;
+            inset: 0;
+            z-index: 80;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s var(--ease-emphasized);
+        }
+        .sheet-scrim.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .sheet {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 90;
+            max-width: var(--app-max-width);
+            margin: 0 auto;
+            background: var(--surface-container-low);
+            border-radius: var(--shape-2xl) var(--shape-2xl) 0 0;
+            padding: 12px 20px calc(24px + var(--safe-bottom));
+            box-shadow: var(--elev-5);
+            transform: translateY(110%);
+            transition: transform 0.45s var(--ease-spring);
+            max-height: 85dvh;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+        .sheet.open {
+            transform: translateY(0);
+        }
+        .sheet::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, var(--surface-container-low), transparent);
+            pointer-events: none;
+            border-radius: var(--shape-2xl) var(--shape-2xl) 0 0;
+            opacity: 0;
+        }
+
+        .sheet-handle {
+            width: 36px;
+            height: 4px;
+            border-radius: var(--shape-full);
+            background: var(--on-surface-variant);
+            opacity: 0.35;
+            margin: 0 auto 20px;
+            transition: opacity 0.2s, width 0.2s var(--ease-spring);
+        }
+
+        .sheet-content {
+            padding: 8px 0 24px;
+        }
+
+        .sheet-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px 6px 10px;
+            border-radius: var(--shape-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 18px;
+        }
+        .sheet-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .sheet-badge[data-cat="pohoda"] { background: var(--cat-pohoda-container); color: var(--cat-pohoda-on); }
+        .sheet-badge[data-cat="pohoda"]::before { background: var(--cat-pohoda); }
+        .sheet-badge[data-cat="odvaha"] { background: var(--cat-odvaha-container); color: var(--cat-odvaha-on); }
+        .sheet-badge[data-cat="odvaha"]::before { background: var(--cat-odvaha); }
+        .sheet-badge[data-cat="pravda"] { background: var(--cat-pravda-container); color: var(--cat-pravda-on); }
+        .sheet-badge[data-cat="pravda"]::before { background: var(--cat-pravda); }
+
+        .sheet-question {
+            font-size: clamp(1.45rem, 6vw, 1.85rem);
+            font-weight: 700;
+            line-height: 1.32;
+            letter-spacing: -0.02em;
+            color: var(--on-surface);
+            margin-bottom: 8px;
+            word-wrap: break-word;
+        }
+
+        .sheet-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .btn-tonal {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 14px 16px;
+            border-radius: var(--shape-full);
+            background: var(--surface-container-high);
+            color: var(--on-surface);
+            font-weight: 600;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.2s, transform 0.15s var(--ease-spring);
+        }
+        .btn-tonal:active {
+            transform: scale(0.96);
+            background: var(--surface-container-highest);
+        }
+        .btn-tonal .material-symbols-rounded { font-size: 19px; }
+
+        /* ============================================
+           SNACKBAR
+           ============================================ */
+        .snack {
+            position: fixed;
+            left: 50%;
+            bottom: calc(84px + var(--safe-bottom));
+            transform: translateX(-50%) translateY(20px);
+            z-index: 100;
+            background: var(--on-surface);
+            color: var(--surface);
+            padding: 12px 18px;
+            border-radius: var(--shape-sm);
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: var(--elev-3);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s var(--ease-emphasized), transform 0.35s var(--ease-spring);
+            max-width: calc(100vw - 32px);
+            text-align: center;
+        }
+        .snack.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ============================================
+           EMPTY STATE
+           ============================================ */
+        .empty {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--on-surface-variant);
+        }
+        .empty .material-symbols-rounded {
+            font-size: 48px;
+            opacity: 0.4;
+            margin-bottom: 12px;
+        }
+        .empty p { font-size: 0.95rem; }
+
+        /* ============================================
+           WIDER SCREENS — 2 columns on > 600px width
+           ============================================ */
+        @media (min-width: 600px) {
+            .cards {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <!-- ============ APP BAR ============ -->
+        <header class="app-bar">
+            <div class="app-bar-inner">
+                <div class="brand">
+                    <span class="brand-mark" aria-hidden="true"></span>
+                    <span class="brand-name">Človečina</span>
+                </div>
+                <div style="display:flex; gap:4px;">
+                    <button class="icon-btn" id="shuffleTop" aria-label="Náhodná otázka">
+                        <span class="material-symbols-rounded">shuffle</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ============ CONTENT ============ -->
+        <main class="content">
+            <section class="hero">
+                <span class="hero-eyebrow">Hra pre hlboké rozhovory</span>
+                <h1 class="hero-title">Pýtaj sa.<br><em>Počúvaj. Spoznávaj.</em></h1>
+                <p class="hero-sub">200 otázok, ktoré z obyčajného večera urobia rozhovor, čo ostane v pamäti.</p>
+                <button class="btn-primary" id="drawBtn">
+                    <span class="material-symbols-rounded">casino</span>
+                    <span>Vylosovať otázku</span>
+                </button>
+            </section>
+
+            <section class="filter-bar" id="filterBar" role="tablist" aria-label="Kategórie">
+                <button class="chip active" data-cat="vsetko" role="tab" aria-selected="true">
+                    <span>Všetko</span>
+                </button>
+                <button class="chip" data-cat="pohoda" role="tab">
+                    <span class="chip-dot dot-pohoda" aria-hidden="true"></span>
+                    <span>Pohoda</span>
+                </button>
+                <button class="chip" data-cat="odvaha" role="tab">
+                    <span class="chip-dot dot-odvaha" aria-hidden="true"></span>
+                    <span>Odvaha</span>
+                </button>
+                <button class="chip" data-cat="pravda" role="tab">
+                    <span class="chip-dot dot-pravda" aria-hidden="true"></span>
+                    <span>Hodina pravdy</span>
+                </button>
+            </section>
+
+            <section class="list-header">
+                <h2 class="list-title">Otázky</h2>
+                <span class="list-count" id="counter">200</span>
+            </section>
+
+            <section class="cards" id="questionsGrid" aria-live="polite"></section>
+        </main>
+
+        <!-- ============ FAB ============ -->
+        <button class="fab" id="fab" aria-label="Vylosovať náhodnú otázku">
+            <span class="material-symbols-rounded">casino</span>
+        </button>
+
+        <!-- ============ BOTTOM SHEET ============ -->
+        <div class="sheet-scrim" id="sheetScrim"></div>
+        <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Detail otázky">
+            <div class="sheet-handle" aria-hidden="true"></div>
+            <div class="sheet-content">
+                <span class="sheet-badge" id="sheetBadge" data-cat="pohoda">Pohoda</span>
+                <p class="sheet-question" id="sheetQuestion">Tu sa zobrazí otázka.</p>
+            </div>
+            <div class="sheet-actions">
+                <button class="btn-tonal" id="sheetCopy">
+                    <span class="material-symbols-rounded">content_copy</span>
+                    <span>Kopírovať</span>
+                </button>
+                <button class="btn-tonal" id="sheetAnother">
+                    <span class="material-symbols-rounded">refresh</span>
+                    <span>Ďalšia</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ============ SNACKBAR ============ -->
+        <div class="snack" id="snack" role="status" aria-live="polite"></div>
+    </div>
+
+    <script>
+        // ============================================
+        // DATA — questions database
+        // ============================================
+        var db = {
+            pohoda: [
+                "Aká maličkosť ti dnes alebo v posledných dňoch urobila najväčšiu radosť?",
+                "Ktorú pesničku si dokážeš púšťať stále dookola bez toho, aby ťa omrzela?",
+                "Keby tvoj život mal práve teraz filmový žáner, aký by to bol?",
+                "Aké je tvoje najobľúbenejšie miesto v dome/byte a prečo sa tam cítiš dobre?",
+                "Čo najvtipnejšie alebo najbizarnejšie sa ti stalo tento týždeň?",
+                "Akú najlepšiu radu si v živote dostal/a od svojich starých rodičov alebo rodičov?",
+                "Keby si mohol/mohla okamžite získať jednu novú zručnosť, čo by to bolo?",
+                "Ktoré ročné obdobie najviac vystihuje tvoju osobnosť a prečo?",
+                "Aká je tvoja najobľúbenejšia vôňa, ktorá ti okamžite vyvolá peknú spomienku?",
+                "Ktorú knihu alebo film by si odporučil/a každému človeku na svete?",
+                "Máš nejaký ranný rituál, bez ktorého si nevieš predstaviť svoj úspešný deň?",
+                "Kto zo známych osobností by ťa mal hrať v životopisnom filme?",
+                "Aký najkrajší kompliment ti niekto v poslednej dobe zložil?",
+                "Keby si mohol/mohla cestovať kamkoľvek na svete zadarmo, kde by to bolo?",
+                "Čo ťa dokáže spoľahlivo rozosmiať, aj keď máš zlú náladu?",
+                "Akú hračku alebo vec si mal/a v detstve najradšej?",
+                "Čo je podľa teba ten najlepší liek na unavenú myseľ po ťažkom dni?",
+                "Aký bol tvoj najobľúbenejší predmet v škole a prečo ťa bavil?",
+                "Keby si mal/a opísať svoj dnešný deň len tromi slovami, aké by to boli?",
+                "Aké jedlo by si dokázal/a jesť každý deň do konca života?",
+                "Ktoré zviera ťa podľa teba najlepšie charakterizuje?",
+                "Aký je tvoj obľúbený spôsob oddychu, kedy úplne vypneš telefón?",
+                "Keby si mohol/mohla prežiť jeden deň v koži niekoho iného, kto by to bol?",
+                "Čo ťa naposledy úprimne fascinovalo alebo prekvapilo?",
+                "Na akú vec, ktorú si si sám/sama kúpil/a, si najviac hrdý/á?",
+                "Máš nejaké tajné nadanie alebo mikro-talent, o ktorom veľa ľudí nevie?",
+                "Aká je tvoja najživšia spomienka z detstva spojená s prázdninami?",
+                "Ktorú hru (spoločenskú alebo digitálnu) by si si zahral/a kedykoľvek znova?",
+                "Ktorý priateľ alebo známy ťa v poslednom čase najviac inšpiroval a čím?",
+                "Keby si mohol/mohla zmeniť farbu jednej veci na svete, čo by to bolo?",
+                "Čo je prvá vec, ktorú si všimneš na človeku, keď ho stretneš prvýkrát?",
+                "Aký najlepší darček si kedy niekomu daroval/a?",
+                "Ktorý citát alebo životné motto ťa sprevádza už dlhšiu dobu?",
+                "Ak by si mal/a zorganizovať dokonalý večer s priateľmi, ako by vyzeral?",
+                "Čo ti v poslednom čase prinieslo pocit absolútneho pokoja?",
+                "Máš radšej skoré ranné vstávanie a pokoj, alebo nočný život a ticho?",
+                "Ktoré miesto v tvojom okolí má podľa teba najkrajší výhľad?",
+                "Aká bola tvoja najobľúbenejšia rozprávka, keď si bol/a malý/á?",
+                "Ak by si mal/a napísať knihu, o čom by bola?",
+                "Čo ťa na ľuďoch vo tvojom okolí vie najviac fascinovať v pozitívnom zmysle?",
+                "Aký najzaujímavejší fakt si sa v poslednej dobe dozvedel/a?",
+                "Ktorá pieseň ti vždy dodá obrovské množstvo energie a motivácie?",
+                "Keby si mal/a neobmedzený rozpočet na oslavu svojich narodenín, ako by vyzerala?",
+                "Ktorú vec nosíš neustále so sebou a prečo je pre teba dôležitá?",
+                "Čo najbizarnejšie alebo najkrajšie si kedy videl/a na oblohe?",
+                "Ktorý technologický vynález ti najviac uľahčuje každodenný život?",
+                "Ak by si mohol/mohla vlastniť akýkoľvek historický predmet, čo by to bolo?",
+                "Aký typ počasia ti robí najlepšiu náladu a prečo?",
+                "Čo ťa naučil tvoj domáci miláčik (alebo zvieratá všeobecne) o živote?",
+                "Keby si mal/a vybrať jednu vec, ktorú na sebe nosíš najradšej, čo by to bolo?",
+                "Ktoré ovocie alebo zeleninu považuješ za absolútny kráľovský kúsok prírody?",
+                "Aká je tvoja najobľúbenejšia tradícia, ktorú doma dodržiavate?",
+                "Ak by si mal/a možnosť stráviť hodinu rozhovorom s akýmkoľvek vedcom, kto by to bol?",
+                "Čo ťa naposledy prinútilo usmiať sa na neznámeho človeka na ulici?",
+                "Ktorý zážitok z posledného roka by si si chcel/a pamätať navždy?",
+                "Aká je tvoja najobľúbenejšia príchuť zmrzliny, ktorú si dáš za každých okolností?",
+                "Keby tvoj domov mohol mať jednu čarovnú miestnosť navyše, čo by v nej bolo?",
+                "Čo pre teba znamená slovo 'pohoda' vyjadrené jedným konkrétnym obrazom?",
+                "Ktorá historická éra ťa vizuálne alebo atmosféricky najviac priťahuje?",
+                "Akú najlepšiu vec si sa naučil/a variť alebo piecť?",
+                "Ak by si mohol/mohla poslať odkaz celému svetu, ktorý by sa zobrazil na oblohe, čo by tam stálo?",
+                "Ktorý kus oblečenia ti dodáva najväčšie sebavedomie, keď si ho oblečieš?",
+                "Aké je tvoje obľúbené slovenské slovo a prečo sa ti páči jeho zvuk?",
+                "Keby si mohol/mohla otvoriť kaviareň alebo reštauráciu, ako by sa volala a čo by sa tam podávalo?",
+                "Čo ťa na prírode vo tvojom okolí vie najviac očariť?",
+                "Aký najlepší kompliment si kedy dostal/a za svoju prácu alebo tvorbu?",
+                "Ktorý šport alebo pohybová aktivita ťa najviac napĺňa čistou radosťou?"
+            ],
+            odvaha: [
+                "Čoho sa v živote momentálne najviac bojíš, ale málokedy o tom nahlas hovoríš?",
+                "Kedy si naposledy musel/a prekonať sám/sama seba a urobiť niečo, z čoho si mal/a obrovský strach?",
+                "Ktoré svoje rozhodnutie z minulosti považuješ za najodvážnejšie?",
+                "Povedal/a si niekomu v poslednej dobe rázne 'NIE', hoci to bolo pre teba veľmi ťažké?",
+                "Čo najbláznivejšie alebo najriskantnejšie si v živote urobil/a a dopadlo to dobre?",
+                "Keby si vedel/a, že na 100% neuspeješ, ale nikto sa o tom nedozvie, skúsil/a by si to aj tak?",
+                "Aká je tá najnepríjemnejšia pravda, ktorú si si o sebe musel/a v poslednom čase priznať?",
+                "Kedy si naposledy obhajoval/a niekoho, proti komu stála celá skupina ľudí?",
+                "Čo by si urobil/a, keby si mal/a na jeden deň absolútnu imunitu voči strachu?",
+                "Ktorý tvoj zlozvyk alebo vlastnosť ťa najviac brzdí v dosahovaní cieľov?",
+                "Dokázal/a by si sa zbaliť do jedného batohu a odísť žiť na rok do úplne cudzej krajiny?",
+                "Kedy si naposledy priznal/a svoju chybu pred niekým, na kom ti veľmi záleží?",
+                "Čo je pre teba ťažšie: prijať kritiku, alebo prijať úprimnú, hlbokú pochvalu?",
+                "Akú najväčšiu pravdu o svojich pocitoch momentálne pred niekým dusíš v sebe?",
+                "Keby si mal/a možnosť zmeniť jedno svoje radikálne rozhodnutie z minulosti, urobil/a by si to?",
+                "Čo by si zmenil/a na svojom správaní k ľuďom, keby si vedel/a, že ťa nikto nesúdi?",
+                "Aký je tvoj postoj k riskovaniu? Si skôr opatrný typ, alebo ideš do vecí po hlave?",
+                "Kedy si sa naposledy cítil/a naozaj nepochopený/á svojím okolím?",
+                "Čo najodvážnejšie si kedy napísal/a do správy alebo mailu a stlačil/a 'odoslať'?",
+                "Bojíš sa viac zlyhania, alebo toho, že stratíš kontrolu nad vecami?",
+                "Ktorá situácia ťa v živote najviac zocelila a naučila ťa postaviť sa za seba?",
+                "Keby si mal/a verejne vystúpiť pred 1000 ľuďmi, o akej téme by si dokázal/a rozprávať bez prípravy?",
+                "Dokážeš otvorene hovoriť o svojich slabostiach, alebo sa snažíš vždy pôsobiť silne?",
+                "Akú najväčšiu výzvu pred sebou momentálne tlačíš a odkladáš ju na neskôr?",
+                "Kedy si naposledy plakal/a pred iným človekom a čo to vo tebe zanechalo?",
+                "Záleží ti na tom, čo si o tebe myslia cudzí ľudia na ulici alebo na internete?",
+                "Keby si mohol/mohla zo svojho života vymazať jeden trapas, ktorý sa ti stal, ktorý by to bol?",
+                "Čo je pre teba najväčším prejavom odvahy u iných ľudí?",
+                "Dokázal/a by si odpustiť zradu človeku, ktorého považuješ za najlepšieho priateľa?",
+                "Kedy si naposledy zažil/a pocit, že si na niečo úplne sám/sama, a ako si to zvládol/la?",
+                "Čo ťa vie najspoľahlivejšie vyprovokovať k tomu, aby si začal/a bojovať za spravodlivosť?",
+                "Aká najťažšia otázka ti bola v živote položená a ako si na ňu odpovedal/a?",
+                "Keby si mal/a možnosť vidieť svoju budúcnosť za 10 rokov, chcel/a by si ju vidieť, alebo radšej riskuješ?",
+                "Čo najodvážnejšie si urobil/a pre lásku alebo priateľstvo?",
+                "Dokážeš odísť z prostredia alebo vzťahu, ktorý ti škodí, hoci ho máš rád/a?",
+                "Kedy si sa naposledy cítil/a hrdý/á na to, ako si zvládol/la krízovú situáciu?",
+                "Máš odvahu povedať pravdu, aj keď vieš, že tým niekoho sklameš alebo zraníš?",
+                "Ktorú svoju emóciu sa najčastejšie snažíš pred svetom skrývať?",
+                "Ak by si mal/a zajtra začať od nuly v úplne novom obore, čo by to bolo?",
+                "Čo je pre teba najväčším testom vnútornej sily a integrity?",
+                "Kedy si naposledy prekonal/a sociálnu úzkosť alebo nekomfort v neznámej spoločnosti?",
+                "Aká je tvoja najväčšia neistota ohľadom tvojej vlastnej budúcnosti?",
+                "Keby si mal/a možnosť vymazať jednu svoju spomienku, aby si už necítil/a bolesť, urobil/a by si to?",
+                "Čo ti dodáva najväčšiu odvahu, keď stojíš pred dôležitým životným krokom?",
+                "Dokážeš sa bez problémov ospravedlniť mladšiemu človeku alebo dieťaťu, ak vieš, že si pochybil/a?",
+                "Kedy si naposledy povedal/a niekomu do očí niečo, čo ho naozaj šokovalo?",
+                "Čo ťa naposledy prinútilo vystúpiť zo svojej komfortnej zóny tak silno, že si mal/a husiu kožu?",
+                "Akú masku najčastejšie nasadzuješ, keď sa necítiš vo svojej koži?",
+                "Bolo by pre teba ťažké stráviť týždeň v úplnej samote bez akéhokoľvek kontaktu so svetom?",
+                "Ktorá tvoja vlastnosť ti v živote priniesla najviac problémov, no odmietaš ju zmeniť?",
+                "Čo najodvážnejšie by si chcel/a dosiahnuť v nasledujúcich piatich rokoch?",
+                "Kedy si mal/a naposledy pocit, že riskuješ všetko pre jednu jedinú vec?",
+                "Si pripravený/á niesť následky za svoje chyby, alebo podvedome hľadáš výhovorky?",
+                "Ak by ti niekto ponúkol možnosť zistiť presný dátum tvojej smrti, chcel/a by si to vedieť?",
+                "Ktorú pravdu o svete je podľa teba najťažšie prijať?",
+                "Čo ťa dokáže najviac vystrašiť na správaní dnešnej spoločnosti?",
+                "Kedy si naposledy investoval/a obrovské množstvo energie do niečoho, čo nakoniec nevyšlo?",
+                "Máš odvahu priznať si, že v niečom zásadnom nevieš, ako ďalej?",
+                "Ktorý tvoj krok v živote vyžadoval najviac trpezlivosti a odopierania si vecí?",
+                "Čo pre teba znamená žiť odvážny život v bežných, každodenných dňoch?",
+                "Kedy si naposledy obetoval/a svoje vlastné pohodlie pre dobro niekoho iného?",
+                "Ktorý strach z detstva ťa drží dodnes, hoci vieš, že je iracionálny?",
+                "Ak by si mal/a napísať list svojmu budúcemu ja, pred čím by si sa najviac varoval/a?",
+                "Čo ťa najviac desí na predstave, že by si zostal/a nepochopený/á tými najbližšími?",
+                "Dokážeš sa postaviť autorite, ak vieš, že nemá pravdu a koná nespravodlivo?",
+                "Aká najriskantnejšia investícia (finančná, časová alebo emocionálna) sa ti v živote oplatila?",
+                "Kedy si mal/a naposledy pocit, že si prekročil/a hranicu, ktorú si si sám/sama určil/a?"
+            ],
+            pravda: [
+                "Odpustil/a si už naozaj človeku, ktorý ti v živote najviac ublížil?",
+                "Čo si o sebe často nahováraš, hoci v hĺbke duše vieš, že to nie je pravda?",
+                "Keby si mal/a zajtra zomrieť, čo by si najviac ľutoval/a, že si nestihol/la urobiť alebo povedať?",
+                "Cítiš sa niekedy osamelo, aj keď si obklopený/á ľuďmi, ktorí ťa majú radi?",
+                "Kedy si naposledy predstieral/a, že si niekým iným, len aby si zapadol/la do kolektívu?",
+                "Aká je tvoja najväčšia neresť alebo tajomstvo, ktoré o tebe nevie absolútne nikto?",
+                "Čo je tá najsebeckejšia vec, ktorú pravidelne robíš alebo si v živote urobil/a?",
+                "Žiješ naozaj svoj vlastný život, alebo plníš očakávania svojich rodičov a okolia?",
+                "Ktorá udalosť z minulosti ťa najviac vnútorne zlomila a ako ťa to zmenilo?",
+                "Ak by si mal/a možnosť vymazať zo svojho života jedného človeka, urobil/a by si to?",
+                "Kedy si naposledy pocítil/a čistú, nefalšovanú závisť voči úspechu niekoho blízkeho?",
+                "Čo na sebe úprimne nedokážeš vystáť a bojuješ s tým každý jeden deň?",
+                "Ktorý tvoj vzťah (priateľský či rodinný) je momentálne najviac naštrbený a koho je to chyba?",
+                "Čo je pre teba dôležitejšie: osobný úspech a kariéra, alebo hlboké a stabilné vzťahy?",
+                "Kedy si bol/a naposledy na seba naozaj hnusný/á a kritizoval/a si sa pod čiernu zem?",
+                "Akú najväčšiu lož si v živote povedal/a a aké mala následky?",
+                "Čo by sa stalo, keby ľudia v tvojom okolí dokázali čítať tvoje myšlienky na hodinu?",
+                "Cítiš sa niekedy nedocenený/á za to všetko, čo robíš pre ostatných ľudí?",
+                "Ktorá tvoja vlastnosť alebo správanie najviac ubližuje ľuďom, ktorých miluješ?",
+                "Ak by si mal/a pomenovať svoju najväčšiu traumu, čo by to bolo?",
+                "Čo ťa robí skutočne šťastným/ou, bez ohľadu na peniaze, status alebo názor iných?",
+                "Veríš, že ťa ľudia majú radi kvôli tomu, kým naozaj si, alebo kvôli tomu, čo pre nich robíš?",
+                "Kedy si naposledy využil/a niečiu dobrotu vo svoj vlastný prospech?",
+                "Čo je tá najťažšia vec, ktorú si musel/a niekomu oznámiť face-to-face?",
+                "Akú pravdu o sebe sa najviac bojíš zistiť, keď zostaneš sám/sama v tichu?",
+                "Ktorý tvoj sen z detstva už definitívne zomrel a ako si sa s tým vyrovnal/a?",
+                "Čo ťa dokáže najrýchlejšie obrať o všetku životnú energiu a vieru v lepšie zajtrajšky?",
+                "Kedy si naposledy niekoho úmyselne ignoroval/a, hoci si vedel/a, že ťa potrebuje?",
+                "Si spokojný/á s tým, akým človekom si sa stal/a za posledné tri roky?",
+                "Čo je podľa teba najväčším zlyhaním v ľudskom živote?",
+                "Ktorá vec ťa vie najviac rozplakať, keď si úplne sám/sama?",
+                "Čo najhoršie si kedy o niekom povedal/a za jeho chrbtom?",
+                "Ak by si mal/a možnosť zmeniť jednu vec na svojej výchove a detstve, čo by to bolo?",
+                "Bojíš sa starnutia a toho, že stratíš svoju mladosť a silu?",
+                "Kedy si naposledy pocítil/a hlbokú ľútosť nad niečím, čo si povedal/a v hneve?",
+                "Čo je pre teba najväčším zdrojom vnútornej neistoty, keď sa pozrieš do zrkadla?",
+                "Akú radu by si dal/a svojmu mladšiemu ja, keby si mal/a len 30 sekúnd času?",
+                "Čo ti drží pri živote a dáva ti zmysel ráno vstať z postele, keď máš tie najhoršie dni?",
+                "Veríš v osud, alebo si pevne presvedčený/á, že všetko máš len vo svojich rukách?",
+                "Kedy si sa naposledy cítil/a ako totálny pokrytec?",
+                "Čo je najväčšia obeta, akú si kedy pre niekoho priniesol/la a stála vôbec za to?",
+                "Ktorá tvoja tajná túžba ťa najviac desí, pretože by mohla zničiť tvoj doterajší život?",
+                "Cítiš sa vo svojom vnútri slobodný/á, alebo si väzňom svojich vlastných povinností a strachov?",
+                "Čo by si najradšej vymazal/a zo svojej internetovej histórie alebo pamäte telefónu?",
+                "Kedy si naposledy niekomu povedal/a 'Milujem ťa' alebo 'Záleží mi na tebe' a myslel/a si to absolútne úprimne?",
+                "Čo ťa na tvojom živote momentálne najviac frustruje a prečo s tým nič nerobíš?",
+                "Ak by si mal/a možnosť zistiť, čo si o tebe ľudia naozaj myslia, chcel/a by si to vedieť?",
+                "Ktorú chybu svojich rodičov podvedome opakuješ, hoci si si sľúbil/a, že to nikdy neurobíš?",
+                "Čo pre teba znamená skutočná, čistá láska bez akýchkoľvek podmienok?",
+                "Kedy si naposledy zažil/a moment, kedy si si uvedomil/a vlastnú smrteľnosť?",
+                "Čo je tá najodvážnejšia vec, ktorú by si urobil/a, keby ti zostával posledný mesiac života?",
+                "Cítiš sa niekedy vinný/á za to, že máš lepší život ako ľudia okolo teba?",
+                "Ktorá lož, ktorú ti niekto povedal, ťa ranila najviac v celom tvojom živote?",
+                "Čo ťa drží v noci hore, keď nemôžeš zaspať a premýšľaš nad životom?",
+                "Si pripravený/á odpustiť sám/sama sebe všetky svoje zlyhania a minulé verzie seba?",
+                "Čo je pre teba tou najdôležitejšou hodnotou, cez ktorú nikdy, za žiadnych okolností, nejde vlak?",
+                "Kedy si naposledy zažil/a pocit absolútneho vyhorenia a ako si z neho vykorčuľoval/a?",
+                "Ak by si mal/a vybrať jednu vec, ktorú na svete najviac nenávidíš, čo by to bolo?",
+                "Čo ťa v tvojom živote stojí najviac pretvárky a brania na seba cudzej roly?",
+                "Ktoré slovo alebo veta ťa dokáže v sekunde najviac emociálne zlomiť?",
+                "Čo je podľa teba najväčšia pravda o vzťahoch, ktorú sa ľudia učia až príliš neskoro?",
+                "Kedy si naposledy pocítil/a, že tvoje srdce a tvoj rozum chcú dve úplne opačné veci?",
+                "Čo ti najviac chýba z čias, kedy si bol/a ešte bezstarostným dieťaťom?",
+                "Ak by si mal/a možnosť vrátiť čas a zmeniť jednu jedinú sekundu vo svojom živote, ktorá by to bola?",
+                "Čo pre teba znamená byť naozaj 'dobrým človekom' v dnešnom komplikovanom svete?",
+                "Máš v sebe nejaké nedoriešené záležitosti s niekým, kto už nežije?",
+                "Ktorá otázka z tohto zoznamu ťa zasiahla najhlbšie a prinútila ťa na chvíľu sa zamyslieť?"
+            ]
+        };
+
+        // ============================================
+        // STATE
+        // ============================================
+        var allQuestions = [];
+        var currentFilter = 'vsetko';
+        var currentQuestion = null;
+
+        // ============================================
+        // INIT
+        // ============================================
+        function initData() {
+            allQuestions = [];
+            var globalId = 1;
+            var categories = ['pohoda', 'odvaha', 'pravda'];
+            for (var i = 0; i < categories.length; i++) {
+                var cat = categories[i];
+                var list = db[cat];
+                for (var j = 0; j < list.length; j++) {
+                    allQuestions.push({ id: globalId++, category: cat, text: list[j] });
+                }
+            }
+        }
+
+        function getCategoryLabel(cat) {
+            if (cat === 'pohoda') return 'Pohoda';
+            if (cat === 'odvaha') return 'Odvaha';
+            return 'Hodina pravdy';
+        }
+
+        // ============================================
+        // RENDER
+        // ============================================
+        function createCard(q, index) {
+            var card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-cat', q.category);
+            card.style.animationDelay = Math.min(index * 25, 400) + 'ms';
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+
+            card.innerHTML =
+                '<div class="card-head">' +
+                    '<span class="tag" data-cat="' + q.category + '">' + getCategoryLabel(q.category) + '</span>' +
+                    '<span class="card-num">#' + q.id + '</span>' +
+                '</div>' +
+                '<div class="card-text">' + escapeHtml(q.text) + '</div>' +
+                '<div class="card-foot">' +
+                    '<span class="card-arrow">Otvoriť <span class="material-symbols-rounded">arrow_forward</span></span>' +
+                '</div>';
+
+            var open = function() { openSheet(q); };
+            card.addEventListener('click', open);
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+            });
+            return card;
+        }
+
+        function escapeHtml(s) {
+            return s.replace(/[&<>"']/g, function(c) {
+                return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+            });
+        }
+
+        function renderGrid(questions) {
+            var grid = document.getElementById('questionsGrid');
+            grid.innerHTML = '';
+
+            if (questions.length === 0) {
+                var empty = document.createElement('div');
+                empty.className = 'empty';
+                empty.innerHTML = '<span class="material-symbols-rounded">search_off</span><p>Žiadne otázky v tejto kategórii.</p>';
+                grid.appendChild(empty);
+            } else {
+                for (var i = 0; i < questions.length; i++) {
+                    grid.appendChild(createCard(questions[i], i));
+                }
+            }
+
+            // Animate counter
+            animateCounter(questions.length);
+        }
+
+        function animateCounter(target) {
+            var counter = document.getElementById('counter');
+            counter.textContent = target;
+            counter.style.transform = 'scale(1.2)';
+            setTimeout(function() { counter.style.transform = 'scale(1)'; }, 200);
+        }
+
+        function getFiltered() {
+            if (currentFilter === 'vsetko') return allQuestions;
+            return allQuestions.filter(function(q) { return q.category === currentFilter; });
+        }
+
+        // ============================================
+        // FILTER
+        // ============================================
+        function setFilter(cat) {
+            currentFilter = cat;
+            var chips = document.querySelectorAll('.chip');
+            for (var i = 0; i < chips.length; i++) {
+                var isActive = chips[i].getAttribute('data-cat') === cat;
+                chips[i].classList.toggle('active', isActive);
+                chips[i].setAttribute('aria-selected', isActive ? 'true' : 'false');
+            }
+            renderGrid(getFiltered());
+        }
+
+        // ============================================
+        // BOTTOM SHEET
+        // ============================================
+        function openSheet(q) {
+            currentQuestion = q;
+            var badge = document.getElementById('sheetBadge');
+            var text = document.getElementById('sheetQuestion');
+            badge.setAttribute('data-cat', q.category);
+            badge.textContent = getCategoryLabel(q.category);
+            text.textContent = q.text;
+
+            document.getElementById('sheet').classList.add('open');
+            document.getElementById('sheetScrim').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSheet() {
+            document.getElementById('sheet').classList.remove('open');
+            document.getElementById('sheetScrim').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function drawRandom() {
+            if (allQuestions.length === 0) return;
+            var pool = getFiltered().length ? getFiltered() : allQuestions;
+            var idx = Math.floor(Math.random() * pool.length);
+            var q = pool[idx];
+
+            // Spin animation on FAB
+            var fab = document.getElementById('fab');
+            fab.classList.remove('spinning');
+            void fab.offsetWidth;
+            fab.classList.add('spinning');
+
+            // Slight delay so the spin is felt before the sheet appears
+            setTimeout(function() { openSheet(q); }, 220);
+        }
+
+        // ============================================
+        // SNACKBAR
+        // ============================================
+        var snackTimer = null;
+        function showSnack(msg) {
+            var snack = document.getElementById('snack');
+            snack.textContent = msg;
+            snack.classList.add('show');
+            clearTimeout(snackTimer);
+            snackTimer = setTimeout(function() { snack.classList.remove('show'); }, 2200);
+        }
+
+        // ============================================
+        // RIPPLE
+        // ============================================
+        function addRipple(el) {
+            el.addEventListener('click', function(e) {
+                var rect = el.getBoundingClientRect();
+                var size = Math.max(rect.width, rect.height);
+                var ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+                el.appendChild(ripple);
+                setTimeout(function() { ripple.remove(); }, 600);
+            });
+        }
+
+        // ============================================
+        // EVENTS
+        // ============================================
+        function initEvents() {
+            // Filter chips
+            var chips = document.querySelectorAll('.chip');
+            for (var i = 0; i < chips.length; i++) {
+                (function(chip) {
+                    chip.addEventListener('click', function() {
+                        setFilter(chip.getAttribute('data-cat'));
+                    });
+                })(chips[i]);
+            }
+
+            // Draw buttons
+            document.getElementById('drawBtn').addEventListener('click', drawRandom);
+            document.getElementById('fab').addEventListener('click', drawRandom);
+            document.getElementById('shuffleTop').addEventListener('click', drawRandom);
+
+            // Sheet close
+            document.getElementById('sheetScrim').addEventListener('click', closeSheet);
+
+            // Sheet another
+            document.getElementById('sheetAnother').addEventListener('click', function() {
+                if (!currentQuestion) return;
+                drawRandom();
+            });
+
+            // Sheet copy
+            document.getElementById('sheetCopy').addEventListener('click', function() {
+                if (!currentQuestion) return;
+                var text = currentQuestion.text;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(
+                        function() { showSnack('Skopírované do schránky'); },
+                        function() { fallbackCopy(text); }
+                    );
+                } else {
+                    fallbackCopy(text);
+                }
+            });
+
+            // ESC closes sheet
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeSheet();
+            });
+
+            // Ripple on primary button & FAB
+            addRipple(document.getElementById('drawBtn'));
+            addRipple(document.getElementById('fab'));
+
+            // Swipe-down to dismiss sheet
+            var sheet = document.getElementById('sheet');
+            var startY = 0, currentY = 0, dragging = false;
+            sheet.addEventListener('touchstart', function(e) {
+                if (sheet.scrollTop > 0) return;
+                startY = e.touches[0].clientY;
+                dragging = true;
+                sheet.style.transition = 'none';
+            }, { passive: true });
+            sheet.addEventListener('touchmove', function(e) {
+                if (!dragging) return;
+                currentY = e.touches[0].clientY;
+                var delta = Math.max(0, currentY - startY);
+                sheet.style.transform = 'translateY(' + delta + 'px)';
+            }, { passive: true });
+            sheet.addEventListener('touchend', function() {
+                if (!dragging) return;
+                dragging = false;
+                sheet.style.transition = '';
+                var delta = currentY - startY;
+                if (delta > 100) {
+                    closeSheet();
+                }
+                sheet.style.transform = '';
+            });
+
+            // Prevent body scroll bounce when sheet is open
+            sheet.addEventListener('wheel', function(e) {
+                if (sheet.scrollHeight <= sheet.clientHeight) e.preventDefault();
+            }, { passive: false });
+        }
+
+        function fallbackCopy(text) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); showSnack('Skopírované do schránky'); }
+            catch (e) { showSnack('Nepodarilo sa skopírovať'); }
+            document.body.removeChild(ta);
+        }
+
+        // ============================================
+        // BOOT
+        // ============================================
+        window.addEventListener('DOMContentLoaded', function() {
+            initData();
+            renderGrid(allQuestions);
+            initEvents();
+        });
+    </script>
+</body>
+</html>
