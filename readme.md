@@ -1,1 +1,1 @@
-daklok.github.io/Clovecina
+https://www.daklok.github.io/Clovecina
